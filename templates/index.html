@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block header %}Prompt Form{% endblock %}
+
+{% block content %}
+  <form method="POST">
+    <label for="situation">Situation</label>
+    <input id="situation" name="situation" required />
+  </form>
+{% endblock %}
