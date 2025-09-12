@@ -3,8 +3,49 @@
 {% block header %}Prompt Form{% endblock %}
 
 {% block content %}
-  <form method="POST">
-    <label for="situation">Situation</label>
-    <input id="situation" name="situation" required />
-  </form>
+<form id="prompt_form" method="POST">
+  <label for="situation">Situation</label>
+  <input id="situation" name="situation" required />
+  <label for="level">Level</label>
+  <input id="level" name="level" required />
+  <label for="file_type">File Type</label>
+  <input id="file_type" name="file_type" required />
+  <label for="data">Data</label>
+  <input id="data" name="data" />
+  <button type="submit">Submit prompt</button>
+</form>
+<p id="result"></p>
+
+
+<script>
+  document.getElementById("prompt_form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    // Although form data can be passed using FormData object, 
+    // "data" could be any type in usage (unspecified in description)
+    const formData = {
+      "situation": e.target.situation.value,
+      "level": e.target.level.value,
+      "file_type": e.target.file_type.value,
+      "data": e.target.data.value,
+    };
+    try {
+      const response = await fetch("/verify-prompt", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+      // Show user the form submission result
+      const result = await response.json();
+      document.getElementById("result").textContent = JSON.stringify(result.verification);
+      // Clear form
+      e.target.reset();
+    }
+    catch (error) {
+      console.error(error);
+      document.getElementById("result").textContent = "Invalid Prompt";
+    }
+  })
+</script>
 {% endblock %}
