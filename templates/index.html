@@ -3,36 +3,38 @@
 {% block header %}Prompt Form{% endblock %}
 
 {% block content %}
-<h2>List of Valid Prompts</h2>
-<ul>
-  {% for prompt, prompt_details in valid_prompts.items() %}
-  <li>
-    {{ prompt }}
-  <ul>
-    <li>Situation: {{ prompt_details[0].title() }}</li>
-    <li>Level: {{ prompt_details[1].title() }}</li>
-    <li>File type: {{ prompt_details[2].title() }}</li>
+<section>
+  <h2>List of Valid Prompts</h2>
+  <ul id="prompt_list">
+    {% for prompt, prompt_details in valid_prompts.items() %}
+    <li>
+      {{ prompt }}
+      <ul>
+        <li>Situation: {{ prompt_details[0].title() }}</li>
+        <li>Level: {{ prompt_details[1].title() }}</li>
+        <li>File type: {{ prompt_details[2].title() }}</li>
+      </ul>
+    </li>
+    {% endfor %}
   </ul>
-  </li>
-  {% endfor %}
-</ul>
-<!-- Not using required keyword for testing api purposes -->
+</section>
+<!-- Not using required keyword for this exercise's testing api purposes -->
 <!-- Would also use select elements instead of text input for practical usage -->
 <form id="prompt_form" method="POST">
-  <label for="situation">Situation</label>
-  <input id="situation" name="situation" />
-  <label for="level">Level</label>
-  <input id="level" name="level" />
-  <label for="file_type">File Type</label>
-  <input id="file_type" name="file_type" />
+  <label for="situation">Situation<p class="form_required">*</p></label>
+  <input id="situation" class="prompt_input" name="situation" />
+  <label for="level">Level<p class="form_required">*</p></label>
+  <input id="level" class="prompt_input" name="level" />
+  <label for="file_type">File Type<p class="form_required">*</p></label>
+  <input id="file_type" class="prompt_input" name="file_type" />
   <label for="data">Data</label>
-  <input id="data" name="data" />
-  <button type="submit">Submit prompt</button>
+  <input id="data" class="prompt_input" name="data" />
+  <button type="submit">Submit Prompt</button>
+  <p id="result"></p>
 </form>
-<p id="result"></p>
-
 
 <script>
+  const result = document.getElementById("result");
   document.getElementById("prompt_form").addEventListener("submit", async (e) => {
     e.preventDefault();
     // Although form data can be passed using FormData object, 
@@ -56,17 +58,25 @@
       if (!response.ok) {
         throw new Error(`HTTP ${response.status} Message:${verification.message}`);
       }
-      // Successful prompt submission
-      document.getElementById("result").textContent = verification.prompt;
+      // Show user message for successful prompt submission
+      displayResult("rgb(203, 240, 202)", "rgb(58, 138, 57)", `${verification.prompt} submitted`);
       e.target.reset();
     }
     catch (error) {
       console.error(error);
       // Extract and display error message
-      const resultPrefix = "Message:\"";
-      const errorDisplay = error.message.slice(error.message.indexOf(resultPrefix) + resultPrefix.length, -1);
-      document.getElementById("result").textContent = errorDisplay;
+      const resultPrefix = "Message:";
+      const errorDisplay = error.message.slice(error.message.indexOf(resultPrefix) + resultPrefix.length);
+      // In practice, would clarify "Missing Data" to refer to fields and not the "Data" field
+      displayResult("rgb(240, 202, 202)", "rgb(138, 57, 57)", errorDisplay);
     }
   })
+
+  function displayResult(backgroundColor, borderColor, text) {
+    result.style.display = "block";
+    result.style.backgroundColor = backgroundColor;
+    result.style.borderColor = borderColor;
+    result.textContent = text;
+  }
 </script>
 {% endblock %}

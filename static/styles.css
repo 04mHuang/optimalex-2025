@@ -1,0 +1,63 @@
+body {
+  background-color: rgb(224, 228, 234);
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+}
+.main_content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 2rem 7rem;
+  padding: 1rem 2rem;
+  background-color: rgb(250, 253, 255);
+  box-shadow: rgba(12, 28, 47, 0.24) 0px 3px 8px;
+  border-radius: 1rem;
+}
+.main_content h1 {
+  margin-top: 0;
+}
+.section_content {
+  display: flex;
+  flex: 1 1;
+  gap: 4rem;
+}
+
+#prompt_list {
+  padding-left: 1rem;
+}
+
+#prompt_form {
+  margin-top: 4rem;
+}
+.form_required {
+  display: inline;
+  margin-left: 0.3rem;
+  color: rgb(209, 57, 57);
+}
+#prompt_form button {
+  margin-top: 1rem;
+  padding: 0.5rem 0.7rem;
+  width: 100%;
+  border: none;
+  border-radius: 0.3rem;
+  background-color: rgb(46, 55, 67);
+  color: rgb(224, 228, 234);
+  cursor: pointer;
+  transition: background-color 0.5s ease-in-out;
+}
+#prompt_form button:active {
+  cursor: pointer;
+  background-color: rgb(36, 72, 127);
+}
+.prompt_input {
+  display: block;
+  padding: 0.1rem 0;
+  margin-bottom: 0.3rem;
+}
+
+#result {
+  display: none;
+  text-align: center;
+  padding: 0.3rem 0.7rem;
+}

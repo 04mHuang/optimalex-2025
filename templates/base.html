@@ -1,11 +1,19 @@
 <!DOCTYPE html>
+
 <head>
   <title>Michelle - Optimalex Submission</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+    rel="stylesheet">
 </head>
+
 <body>
-  <h1>{% block header %}{% endblock %}</h1>
-  <section class="content">
-    {% block content %}{% endblock %}
-  </section>
+  <main class="main_content">
+    <h1>{% block header %}{% endblock %}</h1>
+    <section class="section_content">
+      {% block content %}{% endblock %}
+    </section>
+  </main>
 </body>
