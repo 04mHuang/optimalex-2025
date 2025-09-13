@@ -40,25 +40,25 @@ VALID_PROMPTS = {
 
 @app.route("/")
 def initialize():
-    return render_template("index.html")
+    return render_template("index.html", valid_prompts=VALID_PROMPTS)
 
 @app.route("/verify-prompt", methods=["POST"])
 def verify_prompt():
     data = request.json
     # No checks on the actual data value (not specified)
-    # Remove leading and trailing whitespace
-    situation = data["situation"].strip()
-    level = data["level"].strip()
-    file_type = data["file_type"].strip()
+    # Remove leading & trailing whitespace and turn into lowercase
+    situation = data["situation"].strip().lower()
+    level = data["level"].strip().lower()
+    file_type = data["file_type"].strip().lower()
     try:
         if situation == "" or level == "" or file_type == "":
             return {"message": "Missing Data"}, 400
         # Check if request matches any of the valid prompts
         for key, prompt in VALID_PROMPTS.items():
             if (
-                prompt[0] == situation.lower()
-                and prompt[1] == level.lower()
-                and prompt[2] == file_type.lower()
+                prompt[0] == situation
+                and prompt[1] == level
+                and prompt[2] == file_type
             ):
                 # Return specific valid prompt
                 return {"message": "Valid Prompt", "prompt": key, "details": prompt}, 200
