@@ -5,13 +5,13 @@
 {% block content %}
 <h2>List of Valid Prompts</h2>
 <ul>
-  {% for key, prompt in valid_prompts.items() %}
+  {% for prompt, prompt_details in valid_prompts.items() %}
   <li>
-    {{ key }}
+    {{ prompt }}
   <ul>
-    <li>Situation: {{ prompt[0].title() }}</li>
-    <li>Level: {{ prompt[1].title() }}</li>
-    <li>File type: {{ prompt[2].title() }}</li>
+    <li>Situation: {{ prompt_details[0].title() }}</li>
+    <li>Level: {{ prompt_details[1].title() }}</li>
+    <li>File type: {{ prompt_details[2].title() }}</li>
   </ul>
   </li>
   {% endfor %}
@@ -52,14 +52,12 @@
         body: JSON.stringify(formData),
       })
       const verification = await response.json();
-      const result = JSON.stringify(verification.message);
-      const temp = JSON.stringify(verification);
       // Check for "Invalid Prompt" and "Missing Data" errors
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status} Message:${result}`);
+        throw new Error(`HTTP ${response.status} Message:${verification.message}`);
       }
       // Successful prompt submission
-      document.getElementById("result").textContent = temp.prompt;
+      document.getElementById("result").textContent = verification.prompt;
       e.target.reset();
     }
     catch (error) {
