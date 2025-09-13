@@ -3,13 +3,15 @@
 {% block header %}Prompt Form{% endblock %}
 
 {% block content %}
+<!-- Not using required keyword for testing api purposes -->
+<!-- Would also use select elements instead of text input for practical usage -->
 <form id="prompt_form" method="POST">
   <label for="situation">Situation</label>
-  <input id="situation" name="situation" required />
+  <input id="situation" name="situation" />
   <label for="level">Level</label>
-  <input id="level" name="level" required />
+  <input id="level" name="level" />
   <label for="file_type">File Type</label>
-  <input id="file_type" name="file_type" required />
+  <input id="file_type" name="file_type" />
   <label for="data">Data</label>
   <input id="data" name="data" />
   <button type="submit">Submit prompt</button>
@@ -36,15 +38,23 @@
         },
         body: JSON.stringify(formData),
       })
-      // Show user the form submission result
-      const result = await response.json();
-      document.getElementById("result").textContent = JSON.stringify(result.verification);
-      // Clear form
+      const verification = await response.json();
+      const result = JSON.stringify(verification.message);
+      const temp = JSON.stringify(verification);
+      // Check for "Invalid Prompt" and "Missing Data" errors
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status} Message:${result}`);
+      }
+      // Successful prompt submission
+      document.getElementById("result").textContent = temp.prompt;
       e.target.reset();
     }
     catch (error) {
       console.error(error);
-      document.getElementById("result").textContent = "Invalid Prompt";
+      // Extract and display error message
+      const resultPrefix = "Message:\"";
+      const errorDisplay = error.message.slice(error.message.indexOf(resultPrefix) + resultPrefix.length, -1);
+      document.getElementById("result").textContent = errorDisplay;
     }
   })
 </script>
